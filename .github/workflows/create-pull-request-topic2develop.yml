@@ -9,24 +9,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: branch name
+      - name: Set branch name
+        id: set_branch_name
         env:
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BRANCH_NAME: ${{github.head_ref}}
+          BASE_BRANCH_NAME: ${{github.base_ref}}
         run: |
           git fetch --no-tags --depth=1 origin
           HASH_AND_BRANCH=`git name-rev ${PR_HEAD_SHA}`
           BRANCH=`echo "${HASH_AND_BRANCH##*remotes/origin/}"`
-          echo "PR Opened Branch name: ${BRANCH}"
+          echo ::set-output name=branch::${BRANCH_NAME}
+          echo ${BRANCH}
+          echo ${BRANCH_NAME}
+
+      - name: Check output parameter value
+        run: |
+          echo ${{ steps.set_branch_name.outputs.branch }}
       - uses: actions/checkout@v2
 
       - name: GitHub Pull Request Action for master
         # NOTE: https://github.com/repo-sync/pull-request
         uses: repo-sync/pull-request@v2.5
-        env:
-          BRANCH_NAME: ${{github.head_ref}}
-          BASE_BRANCH_NAME: ${{github.base_ref}}
         with:
-          source_branch: ${BRANCH_NAME}
+          source_branch: ${{ steps.set_branch_name.outputs.branch }}
           destination_branch: "develop"
           pr_title: "$(date +%Y-%m-%d) Release"
           pr_draft: false
