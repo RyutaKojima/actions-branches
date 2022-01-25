@@ -1,0 +1,31 @@
+name: topic->developへのPR作成
+on:
+  pull_request:
+    branches: [ future ]
+    types: [ opened ]
+
+jobs:
+  createPullRequest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: branch name
+        uses: actions/checkout@v2
+        env:
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git fetch --no-tags --depth=1 origin
+          HASH_AND_BRANCH=`git name-rev ${PR_HEAD_SHA}`
+          BRANCH=`echo "${HASH_AND_BRANCH##*remotes/origin/}"`
+          echo "PR Opened Branch name: ${BRANCH}"
+      - uses: actions/checkout@v2
+
+      - name: GitHub Pull Request Action for master
+        # NOTE: https://github.com/repo-sync/pull-request
+        uses: repo-sync/pull-request@v2.5
+        with:
+          source_branch: "${BRANCH}"
+          destination_branch: "develop"
+          pr_title: "$(date +%Y-%m-%d) Release"
+          pr_draft: false
+          pr_allow_empty: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
