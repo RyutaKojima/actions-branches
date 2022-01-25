@@ -26,7 +26,7 @@ jobs:
           BRANCH_NAME: ${{github.head_ref}}
           BASE_BRANCH_NAME: ${{github.base_ref}}
         with:
-          source_branch: ${BRANCH_NAME}
+          source_branch: ${ BRANCH_NAME }
           destination_branch: "develop"
           pr_title: "$(date +%Y-%m-%d) Release"
           pr_draft: false
