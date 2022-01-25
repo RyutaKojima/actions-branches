@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: branch name
+        uses: actions/checkout@v2
         env:
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
