@@ -8,8 +8,8 @@ jobs:
   createPullRequest:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: branch name
-        uses: actions/checkout@v2
         env:
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |

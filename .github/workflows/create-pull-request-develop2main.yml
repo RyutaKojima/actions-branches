@@ -1,4 +1,4 @@
-name: develop->masterへのPR作成
+name: develop->mainへのPR作成
 on:
   pull_request:
     branches: [ develop ]
@@ -15,7 +15,7 @@ jobs:
         uses: repo-sync/pull-request@v2.5
         with:
           source_branch: "develop"
-          destination_branch: "master"
+          destination_branch: "main"
           pr_title: "$(date +%Y-%m-%d) Release"
           pr_draft: false
           pr_allow_empty: false
