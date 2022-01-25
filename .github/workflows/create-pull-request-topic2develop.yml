@@ -1,40 +1,39 @@
-name: topic->developへのPR作成
+name: develop<-topic のPR作成
 on:
   pull_request:
-    branches: [ future ]
-    types: [ opened ]
+    branches:
+      - future
+    types:
+      - opened
 
 jobs:
   createPullRequest:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set branch name
+
+      - name: 出力パラメータの設定 'branch name'
+        # https://thaim.hatenablog.jp/entry/2019/10/22/153354
+        # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#set-an-output-parameter-set-output
         id: set_branch_name
         env:
-          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           BRANCH_NAME: ${{github.head_ref}}
           BASE_BRANCH_NAME: ${{github.base_ref}}
         run: |
-          git fetch --no-tags --depth=1 origin
-          HASH_AND_BRANCH=`git name-rev ${PR_HEAD_SHA}`
-          BRANCH=`echo "${HASH_AND_BRANCH##*remotes/origin/}"`
           echo ::set-output name=branch::${BRANCH_NAME}
-          echo ${BRANCH}
           echo ${BRANCH_NAME}
 
-      - name: Check output parameter value
+      - name: 出力パラメータの確認
         run: |
           echo ${{ steps.set_branch_name.outputs.branch }}
-      - uses: actions/checkout@v2
 
-      - name: GitHub Pull Request Action for master
+      - name: PR作成 'develop <- topic'
         # NOTE: https://github.com/repo-sync/pull-request
         uses: repo-sync/pull-request@v2.5
         with:
           source_branch: ${{ steps.set_branch_name.outputs.branch }}
           destination_branch: "develop"
-          pr_title: "$(date +%Y-%m-%d) Release"
+          pr_title: "develop <= ${{ steps.set_branch_name.outputs.branch }} at $(date +%Y-%m-%d)"
           pr_draft: false
           pr_allow_empty: false
           github_token: ${{ secrets.GITHUB_TOKEN }}
