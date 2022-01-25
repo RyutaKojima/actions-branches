@@ -1,12 +1,15 @@
 name: develop->mainへのPR作成
 on:
   pull_request:
-    branches: [ develop ]
-    types: [ closed ]
+    branches:
+      - develop
+    types:
+      - closed
 
 jobs:
   createPullRequest:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     steps:
       - uses: actions/checkout@v2
 
