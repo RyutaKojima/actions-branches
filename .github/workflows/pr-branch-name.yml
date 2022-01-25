@@ -1,0 +1,15 @@
+on:
+  pull_request:
+    types: [opened, closed]
+
+jobs:
+  debug:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Print branch name
+        env:
+          BRANCH_NAME: ${{github.head_ref}}
+          BASE_BRANCH_NAME: ${{github.base_ref}}
+        run: |
+          echo $BRANCH_NAME
+          echo $BASE_BRANCH_NAME
