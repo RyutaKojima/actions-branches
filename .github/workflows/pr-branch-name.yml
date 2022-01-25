@@ -1,6 +1,8 @@
+name: 対象ブランチ名の表示
+
 on:
   pull_request:
-    types: [opened, closed]
+    types: [opened]
 
 jobs:
   debug:
