@@ -4,7 +4,7 @@
 main
  ↑pull request
 develop
- ↓               future-feature
+ ↓               future
  ↓checkout        ↑pull request(※)
 topic branches===============
 ```
