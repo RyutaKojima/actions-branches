@@ -23,7 +23,7 @@ jobs:
         # NOTE: https://github.com/repo-sync/pull-request
         uses: repo-sync/pull-request@v2.5
         with:
-          source_branch: "${BRANCH}"
+          source_branch: "`${BRANCH}`"
           destination_branch: "develop"
           pr_title: "$(date +%Y-%m-%d) Release"
           pr_draft: false
