@@ -1,12 +1,23 @@
 name: GitHub Actions Demo
 on:
   pull_request:
+    types:
+      - opened
     branches:
       - future
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
+      - name: echo Base branch name
+        uses: actions/checkout@v2
+        env:
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git fetch --no-tags --depth=1 origin
+          HASH_AND_BRANCH=`git name-rev ${PR_HEAD_SHA}`
+          BRANCH=`echo "${HASH_AND_BRANCH##*remotes/origin/}"`
+          echo "PR Opened Branch name: ${BRANCH}"
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."

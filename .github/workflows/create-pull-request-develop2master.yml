@@ -1,4 +1,4 @@
-name: create-develop2master-pull-request
+name: develop->masterへのPR作成
 on:
   pull_request:
     branches: [ develop ]
