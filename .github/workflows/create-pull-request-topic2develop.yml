@@ -29,7 +29,7 @@ jobs:
 
       - name: PR作成 'develop <- topic'
         # NOTE: https://github.com/repo-sync/pull-request
-        uses: repo-sync/pull-request@v2.5
+        uses: repo-sync/pull-request@v2.12
         with:
           source_branch: ${{ steps.set_branch_name.outputs.branch }}
           destination_branch: "develop"

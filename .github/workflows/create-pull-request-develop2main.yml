@@ -15,7 +15,7 @@ jobs:
 
       - name: GitHub Pull Request Action for master
         # NOTE: https://github.com/repo-sync/pull-request
-        uses: repo-sync/pull-request@v2.5
+        uses: repo-sync/pull-request@v2.12
         with:
           source_branch: "develop"
           destination_branch: "main"
